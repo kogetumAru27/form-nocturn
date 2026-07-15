@@ -1,0 +1,128 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ===== User =====
+model User {
+  id            String         @id @default(cuid())
+  name          String
+  email         String         @unique
+  image  　　　　String? 
+  role          Role           @default(USER)
+  notifications Notification[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+// ===== Crop =====
+model Crop {
+  id          String       @id @default(cuid())
+  name        String
+  image       String?
+  description String?
+  workLogs    WorkLog[]
+  inventories Inventory[]
+  saleRecords SaleRecord[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+// ===== WorkLog =====
+model WorkLog {
+  id        String   @id @default(cuid())
+  date      DateTime
+  workType  WorkType
+  note      String?
+  weather   String?
+  quantity  Float?
+  unit      String?
+  duration  Int?
+  image     String?
+  cropId    String
+  crop      Crop     @relation(fields: [cropId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum WorkType {
+  SEEDING
+  TRANSPLANT
+  WATERING
+  FERTILIZING
+  WEEDING
+  PESTICIDE
+  HARVESTING
+  OTHER
+}
+
+// ===== Inventory =====
+model Inventory {
+  id        String   @id @default(cuid())
+  stock     Int
+  unit   String
+  price     Int?
+  cropId    String
+  crop      Crop     @relation(fields: [cropId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ===== SaleRecord =====
+model SaleRecord {
+  id            String   @id @default(cuid())
+  unitPrice     Int
+  totalPrice    Int
+  totalQuantity Int
+  unit          String?
+  saleChannel String?
+  cropId        String
+  crop          Crop     @relation(fields: [cropId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// ===== Notification =====
+model Notification {
+  id         String           @id @default(cuid())
+  type       NotificationType
+  message    String
+  isNotified Boolean          @default(false)
+  userId     String
+  user       User             @relation(fields: [userId], references: [id])
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+}
+
+enum NotificationType {
+  WEATHER
+  PEST
+  TEMPERATURE
+  OTHER
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  message   String
+  createdAt DateTime @default(now())
+}
+
+
+
+
