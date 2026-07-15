@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌙 Farm Nocturn
 
-## Getting Started
+**Grown under the moonlight**
 
-First, run the development server:
+棚田のある田舎で農業とカフェ経営を両立させる——そんな将来の暮らしを実現するための、第一歩として開発したオーナー向け管理アプリです。
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🌾 コンセプト
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Farm Nocturnは、自給自足に近い形で農業を営みながら、夜に営業する天体カフェ「Polaris」を運営するオーナーのための管理ツールです。
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **農業パート**:栽培記録・在庫・販売管理など、農家が日々の業務を一元管理できる機能を実装
+- **カフェパート**:自家栽培の食材を使った、他にはない天体カフェ体験を提供
+- 星空観察の予約や、星座の基礎知識(オリオン座など)を紹介するコンテンツで、天体観測が初めての人でも楽しめる設計
 
-## Learn More
+夜という特別な時間帯に、自家栽培の一皿と満天の星を楽しめる——そんな「特別な日」を演出するカフェを目指しています。
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## ✨ 主な機能
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 公開ページ
+- 🏠 トップページ(農場紹介)
+- 🛒 直売所(在庫のある作物を一覧表示・価格表示)
+- 🔭 天体カフェ Polaris紹介ページ(外部サイトへの導線)
+- ✉️ お問い合わせフォーム(メール通知 + DB保存)
 
-## Deploy on Vercel
+### 管理ページ(要ログイン)
+- 📊 ダッシュボード(通知・直近の作業・在庫サマリー)
+- 🌱 作物管理(登録・編集・削除、画像アップロード対応)
+- 📔 栽培日誌(月別に絞り込み、作業内容・天気・収穫量を記録)
+- 📦 在庫管理(在庫数・単位・価格の管理)
+- 💰 販売記録(単価×数量から売上を自動計算)
+- 🔔 通知機能(天気APIと連携し、台風・高温・害虫注意などを自動生成)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🛠 使用技術
+
+| カテゴリ | 技術 |
+|---|---|
+| フレームワーク | Next.js (App Router) |
+| 言語 | TypeScript |
+| スタイリング | Tailwind CSS |
+| データベース | PostgreSQL (Neon) |
+| ORM | Prisma |
+| 認証 | NextAuth.js (Google OAuth) |
+| 画像管理 | Cloudinary |
+| メール送信 | Resend |
+| 外部API | Open-Meteo(天気情報取得) |
+| 定期実行 | Vercel Cron Jobs |
+| デプロイ | Vercel |
+
+---
+
+## 💡 工夫した点
+
+- **共通コンポーネント設計**:追加・編集フォームを1つのコンポーネントに集約し、`initialData`の有無で処理を出し分ける設計を採用
+- **Server Actions中心の実装**:フォーム送信からDB操作までをServer Actionsで完結させ、型安全なデータのやり取りを徹底
+- **天気連動の自動通知**:Open-Meteo APIから翌日の気象データを取得し、降水量・気温・天気コードに応じて通知内容を出し分けるロジックを実装
+- **Server Component / Client Componentの適切な使い分け**:データ取得はServer Component、インタラクティブな操作が必要な箇所はClient Componentに分離
+
+---
+
+## 🚀 今後の展望
+
+- プッシュ通知への対応
+- 検索・絞り込み機能の強化
+- 天体カフェの座席予約機能との連携強化
